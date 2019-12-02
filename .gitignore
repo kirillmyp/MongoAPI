@@ -1,0 +1,5 @@
+﻿*.config
+**/bin/**
+**/obj/**
+**/.vs/**
+/src/MongoAPI/MongoAPI.csproj.user
