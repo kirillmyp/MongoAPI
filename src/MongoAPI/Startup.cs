@@ -24,6 +24,16 @@ namespace MongoAPI
             services.AddControllers();
             services.Configure<Appsetting>(Configuration);
 
+            services.AddMvc()
+                .AddNewtonsoftJson();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
+                    );
+            });
+
             services.AddOptions<BookstoreDatabaseSettings>();
             services.AddSingleton<IBookstoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
@@ -38,6 +48,11 @@ namespace MongoAPI
             }
 
             app.UseRouting();
+
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseAuthorization();
 
